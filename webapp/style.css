@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: #ff9eff !important;
+    font-family: sans-serif;
+    font-size: 1.25rem;
+    line-height: 150%;
+    text-align: center;
+    text-shadow: 0 2xp 2px #b6701e;
+}
+
+section {
+    color: #fff;
+    text-align: center;
+}
+
+div {
+    height: 100%;
+}
+
+.container {
+    display: table;
+    width: 100%;
+}
+
+.left-half {
+    background-color: #ff9e2c;
+    position: absolute;
+    left: 0px;
+    width: 50%;
+}
+
+.right-half {
+    background-color: #b6701e;
+    position: absolute;
+    left: 0px;
+    width: 50%;
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link ref="stylesheet" type='text/css' href="style.css" />
+    <title>
+        Trend Analyzer - CIS4301 Group 30 Project
+    </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+        function hideAllTrendInput() {
+            hide(document.getElementsByClassName("brand_area"));
+            hide(document.getElementsByClassName("model_area"));
+            hide(document.getElementsByClassName("start_date_area"));
+            hide(document.getElementsByClassName("end_date_area"));
+            hide(document.getElementsByClassName("region_a_area"));
+            hide(document.getElementsByClassName("region_b_area"));
+            hide(document.getElementsByClassName("region_a_mark"));
+            hide(document.getElementsByClassName("region_b_mark"));
+            document.getElementById("myChart").style.display = "none";
+        }
+        function hide(elements) {
+            elements = elements.length ? elements : [elements];
+            for (var index = 0; index < elements.length; index++) {
+                elements[index].style.display = 'none';
+            }
+        }
+        function show(name, specifiedDisplay) {
+            elements = document.getElementsByClassName(name);
+            elements = elements.length ? elements : [elements];
+            for (var index = 0; index < elements.length; index++) {
+                elements[index].style.display = specifiedDisplay || 'block';
+            }
+        }
+        function clearInput(inputId) {
+            var input = document.getElementById(inputId);
+            for (var i = 0; i < input.length; i++) {
+                input[i].value = "";
+            }
+        }
+        function clearDateInput(inputId) {
+            var input = document.getElementById(inputId);
+            for (var i = 0; i < input.length; i++) {
+                input[i].value = null;
+            }
+        }
+        function getValue(inputId) {
+            return document.getElementById(inputId).value;
+        }
+
+        function clearAllInputs() {
+            clearInput("brand_name");
+            clearInput("model");
+            clearInput("region_a");
+            clearInput("state_a");
+            clearInput("region_b");
+            clearInput("state_b");
+        }
+        function getSelectedTrendType() {
+            var trendType = document.getElementById("trendType");
+            var selectedValue = trendType.options[trendType.selectedIndex].value;
+            return selectedValue;
+        }
+        function displayInputArea() {
+            hideAllTrendInput();
+            var selectedValue = getSelectedTrendType();
+            switch (selectedValue) {
+                case "apmr": show("brand_area"); show("model_area"); show("start_date_area"); show("end_date_area"); break;
+                case "pdoc": show("brand_area"); show("model_area"); show("start_date_area"); show("end_date_area"); break;
+                case "ptdr": show("region_a_area"); show("region_b_area"); show("start_date_area"); show("end_date_area"); break;
+                case "pbpd": show("brand_area"); show("model_area"); show("start_date_area"); show("end_date_area"); break;
+                case "ptob": show("brand_area"); show("start_date_area"); show("end_date_area"); break;
+                default: ;
+            }
+            document.getElementById("graph_title").innerHTML = "Wait for inputs to generate...";
+        }
+        function GenerateAnalysis() {
+            // Get data from the inputs
+            var brand_name = getValue("brand_name");
+            var model = getValue("model");
+            var start_date = getValue("start_date");
+            var end_date = getValue("end_date");
+            var region_a = getValue("region_a");
+            var region_b = getValue("region_b");
+            var state_a = getValue("state_a");
+            var state_b = getValue("state_b");
+
+            //TODO:: Where should implement for collect inputs, 
+            //       run corresponding sql with database connection, 
+            //       and generate graph to present.
+            var xAxis;
+            var selectedTrendType = getSelectedTrendType();
+
+
+            if (selectedTrendType == "apmr") // Average Price-Mileage
+            {
+                document.getElementById("graph_title").innerHTML = "Average Price-Mileage Ratio";
+                /* Data Requires:
+                    - x-axis of years
+                    - ratio
+                */
+                xAxis = [1999, 2004, 2009, 2014, 2019, 2020, 2021]; // for test
+
+                new Chart("myChart", {
+                    type: "line",
+                    data: {
+                        labels: xAxis,
+                        datasets: [{
+                            data: [100, 200, 300, 200, 500, null, 700],
+                            borderColor: "red",
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        legend: { display: false }
+                    }
+                });
+
+                // Display the Chart when finished intiation
+                document.getElementById("myChart").style.display = "block";
+            }
+            else if (selectedTrendType == "pdoc") // Price Depreciation of Specific Car
+            {
+                document.getElementById("graph_title").innerHTML = "Price Depreciation of Specific Type of Car";
+                /* Data Requires for graph:
+                    - x-axis of years
+                    - Price average
+                */
+            }
+            else if (selectedTrendType == "ptdr") // Price Trend between Different Regions
+            {
+                document.getElementById("graph_title").innerHTML = "Price Trend between Different Regions";
+                show("region_a_mark");
+                show("region_b_mark");
+                document.getElementById("region_a_info").innerHTML = "region a, state a";
+                document.getElementById("region_b_info").innerHTML = "region b, state b";
+                /* Data Requires for graph:
+                    - x-axis for years
+                    - List of data for average price of each states
+                */
+                xAxis = [1999, 2004, 2009, 2014, 2019, 2020, 2021]; // for test
+
+                new Chart("myChart", {
+                    type: "line",
+                    data: {
+                        labels: xAxis,
+                        datasets: [
+                            {
+                                data: [100, 200, 300, 200, 500, null, 700],
+                                borderColor: "red",
+                                fill: false
+                            },
+                            {
+                                data: [200, 1000, 30, 500, 70, 777],
+                                borderColor: "blue",
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: { display: false }
+                    }
+                });
+
+                // Display the Chart when finished intiation
+                document.getElementById("myChart").style.display = "block";
+            }
+            else if (selectedTrendType == "pbpd") // Price by Posting Date
+            {
+                document.getElementById("graph_title").innerHTML = "Price by Positing Date";
+                /* Data Requires for graph:
+                    - x-axis for dates
+                    - Average price
+                */
+            }
+            else if (selectedTrendType == "ptob") // Price Trend of Brand
+            {
+                /*  Data Requires for graph:
+                    - x-axis for years
+                    - Average price
+                */
+            }
+            else {
+                document.getElementById("graph_title").innerHTML = "Please select a trend query type.";
+            }
+
+        }
+    </script>
+    <form id="inputForm" onchange="displayInputArea()" action="#">
+        <div>
+            <select id="trendType">
+                <option value="default"> * Please Choose a Trend Analysis Query * </option>
+                <option value="apmr"> Average Price-Mileage Ratio over the year </option>
+                <option value="pdoc"> Price Depreciation of Specific Car </option>
+                <option value="ptdr"> Price Trend between Different Regions </option>
+                <option value="pbpd"> Price By Posting Date </option>
+                <option value="ptob"> Price Trend of Brand</option>
+            </select>
+        </div>
+        <br />
+        <div align="center">
+            <br />
+            <table align="center">
+                <tr class="brand_area" style="display:none">
+                    <td align="right"><label for="brand_name">Brand of Manufacturer: </label> </td>
+                    <td align="left"><input type="text" value="" id="brand_name"></input></td>
+                </tr>
+                <tr class="model_area" style="display:none">
+                    <td align="right"><label for="model">Model:</label> </td>
+                    <td align="left"><input type="text" value="" id="model"></input></td>
+                </tr>
+                <tr class="region_a_area" style="display:none">
+                    <td align="right"> <label for="region_a">City/Region A</label> </td>
+                    <td align="left"><input type="text" value="" id="region_a"></input></td>
+                    <td align="right"> <label for="state_a">State A</label> </td>
+                    <td align="left"><input type="text" value="" id="state_a"></input></td>
+                </tr>
+                <tr class="region_b_area" style="display:none">
+                    <td align="right"> <label for="region_b">City/Region B</label></td>
+                    <td align="left"><input type="text" value="" id="region_b"></input></td>
+                    <td align="right"> <label for="state_b">State B</label> </td>
+                    <td align="left"><input type=" text" value="" id="state_b"></input></td>
+                </tr>
+                <tr class="start_date_area" style="display:none">
+                    <td align="right"> Date Start: </td>
+                    <td align="left"><input type="date" id="start_date"></input></td>
+                </tr>
+                <tr class="end_date_area" style="display:none">
+                    <td align="right"> Date End: </td>
+                    <td align="left"><input type="date" id="end_date"></input></td>
+                </tr>
+            </table>
+        </div>
+        <br />
+        <button type="button" onclick="GenerateAnalysis()">Generate</button>
+        <hr>
+        </hr>
+    </form>
+    <section class="container">
+        <div class="left-half">
+            <h id="graph_title" style="font-size: 20px"> Please select a trend query type. </h>
+            <p class="region_a_mark" style="color:red;display:none;"> A: <a id="region_a_info"></a></p>
+            <p class="region_b_mark" style="color:blue;display:none;"> B: <a id="region_b_info"></a></p>
+            <canvas id="myChart" style="width:100%;display:none"></canvas>
+        </div>
+        <div class="right-half">
+
+        </div>
+    </section>
+</body>
+
+</html>

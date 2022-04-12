@@ -1,0 +1,13 @@
+{
+    "name": "webapp",
+    "version": "1.0.0",
+    "description": "Demo app",
+    "keywords": [
+        "myapp"
+    ],
+    "dependencies": {
+        "oracledb": "^5.3.0"
+    },
+    "author": "You",
+    "license": "MIT"
+}
