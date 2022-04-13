@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <link ref="stylesheet" type='text/css' href="style.css" />
+
     <title>
         Trend Analyzer - CIS4301 Group 30 Project
     </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
 </head>
 
 <body>
@@ -79,6 +81,7 @@
             document.getElementById("graph_title").innerHTML = "Wait for inputs to generate...";
         }
         function GenerateAnalysis() {
+
             // Get data from the inputs
             var brand_name = getValue("brand_name");
             var model = getValue("model");
@@ -171,7 +174,7 @@
             }
             else if (selectedTrendType == "pbpd") // Price by Posting Date
             {
-                document.getElementById("graph_title").innerHTML = "Price by Positing Date";
+                document.getElementById("graph_title").innerHTML = "Price by Posting Date";
                 /* Data Requires for graph:
                     - x-axis for dates
                     - Average price
