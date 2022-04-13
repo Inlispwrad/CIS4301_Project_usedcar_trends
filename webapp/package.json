@@ -6,6 +6,7 @@
     "myapp"
   ],
   "dependencies": {
+    "express": "^4.17.3",
     "oracledb": "^5.3.0"
   },
   "author": "You",
